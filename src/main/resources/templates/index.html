@@ -1,28 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <title>Video Rooms</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>Welcome!</h1>
+<body class="bg-gradient-to-tr from-blue-900 to-indigo-600 min-h-screen flex items-center justify-center text-white">
+<div class="bg-white bg-opacity-10 p-10 rounded-2xl shadow-2xl backdrop-blur-md w-full max-w-md text-center">
+  <h1 class="text-3xl font-bold mb-6">Welcome to Video Rooms!</h1>
 
-<form th:action="@{/rooms/create}" th:method="post">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-  <button type="submit">Create Room</button>
-</form>
+  <div sec:authorize="isAuthenticated()">
+    <form th:action="@{/rooms/create}" th:method="post" class="mb-4">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <button type="submit"
+              class="w-full bg-green-500 hover:bg-green-600 transition-colors text-white font-semibold py-2 px-4 rounded-xl shadow-md">
+        Create Room
+      </button>
+    </form>
 
+    <form th:action="@{/rooms/join}" th:method="get" class="mb-4">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <input type="text"
+             th:name="roomCode"
+             placeholder="Enter Room Code"
+             class="w-full mb-2 px-4 py-2 rounded-lg text-black bg-white bg-opacity-80 placeholder-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+             required />
+      <button type="submit"
+              class="w-full bg-blue-500 hover:bg-blue-600 transition-colors text-white font-semibold py-2 px-4 rounded-xl shadow-md">
+        Join Room
+      </button>
+    </form>
 
+    <form th:action="@{/logout}" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+      <button type="submit"
+              class="w-full bg-red-500 hover:bg-red-600 transition-colors text-white font-semibold py-2 px-4 rounded-xl shadow-md">
+        Logout
+      </button>
+    </form>
+  </div>
 
-<form th:action="@{/rooms/join}" th:method="get">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-  <input type="text" th:name="roomCode" placeholder="Enter Room Code" required />
-  <button type="submit">Join Room</button>
-</form>
-
-<form th:action="@{/logout}" method="post">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-  <button type="submit">Logout</button>
-</form>
-
+  <div sec:authorize="isAnonymous()">
+    <p class="text-center text-white">
+      Please
+      <a th:href="@{/auth/login}" class="underline text-blue-300 hover:text-blue-100">login</a>
+      or
+      <a th:href="@{/auth/register}" class="underline text-green-300 hover:text-green-100">register</a>
+      to use the app.
+    </p>
+  </div>
+</div>
 </body>
 </html>

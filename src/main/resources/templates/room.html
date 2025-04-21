@@ -2,14 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Room</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body onload="startVideoCall()">
-<h2 th:text="'Room Code: ' + ${room.roomCode}"></h2>
+<body onload="startVideoCall()" class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center px-4">
+<h2 class="text-2xl font-bold mb-6" th:text="'Room Code: ' + ${room.roomCode}"></h2>
 
-<video id="localVideo" autoplay muted></video>
-<div id="remoteVideos"></div>
+<div class="flex flex-wrap gap-4 justify-center mb-6">
+    <video id="localVideo" autoplay muted class="w-64 h-48 rounded-lg border-4 border-green-400"></video>
+    <div id="remoteVideos" class="flex gap-4 flex-wrap"></div>
+</div>
 
-<button onclick="leaveRoom()">Leave Room</button>
+<button onclick="leaveRoom()" class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg font-semibold">
+    Leave Room
+</button>
+
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
